@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Checkout</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<style>
+
+body{
+font-family:Arial;
+padding:20px;
+background:#f5f5f5;
+}
+
+input,textarea{
+width:100%;
+padding:12px;
+margin-top:10px;
+}
+
+button{
+width:100%;
+padding:15px;
+background:black;
+color:white;
+border:none;
+margin-top:15px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2>Checkout</h2>
+
+<input id="name" placeholder="Full Name">
+
+<input id="phone" placeholder="Mobile Number">
+
+<textarea id="address"
+placeholder="Delivery Address"></textarea>
+
+<button onclick="placeOrder()">
+Place Order
+</button>
+
+<script>
+
+function placeOrder(){
+
+let order={
+
+name:document.getElementById("name").value,
+
+phone:document.getElementById("phone").value,
+
+address:document.getElementById("address").value,
+
+cart:JSON.parse(localStorage.getItem("cart"))||[]
+
+};
+
+localStorage.setItem(
+"lastOrder",
+JSON.stringify(order)
+);
+
+location.href="order-success.html";
+
+}
+
+</script>
+
+</body>
+</html>
