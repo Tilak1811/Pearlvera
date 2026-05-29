@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Product</title>
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1">
+
+<style>
+
+body{
+font-family:Arial;
+margin:0;
+background:#f5f5f5;
+}
+
+.slider{
+width:100%;
+overflow:hidden;
+}
+
+.slides{
+display:flex;
+transition:transform .4s ease;
+}
+
+.slides img{
+width:100%;
+height:350px;
+object-fit:cover;
+flex-shrink:0;
+}
+
+.info{
+padding:20px;
+}
+
+.bottomBar{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+display:flex;
+}
+
+.bottomBar button{
+flex:1;
+padding:15px;
+border:none;
+color:white;
+font-size:16px;
+}
+
+.cartBtn{
+background:#ff9f00;
+}
+
+.buyBtn{
+background:#fb641b;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="slider">
+
+<div id="slides" class="slides"></div>
+
+</div>
+
+<div class="info">
+
+<h2 id="name"></h2>
+
+<h3 id="price"></h3>
+
+<p id="description"></p>
+
+</div>
+
+<div class="bottomBar">
+
+<button class="cartBtn"
+onclick="addToCart()">
+Add To Cart
+</button>
+
+<button class="buyBtn"
+onclick="buyNow()">
+Buy Now
+</button>
+
+</div>
+
+<script type="module">
+
+import { db } from "./firebase.js";
+
+import {
+doc,
+getDoc
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const id =
+new URLSearchParams(location.search)
+.get("id");
+
+const snap =
+await getDoc(doc(db,"products",id));
+
+const product=snap.data();
+
+document.getElementById("name")
+.innerText=product.name;
+
+document.getElementById("price")
+.innerText="₹"+product.price;
+
+document.getElementById("description")
+.innerText=product.description;
+
+let images=[];
+
+if(product.images &&
+product.images.length){
+
+images=[
+product.image,
+...product.images
+];
+
+}else{
+
+images=[product.image];
+
+}
+
+const slides =
+document.getElementById("slides");
+
+images.forEach(img=>{
+
+slides.innerHTML+=`
+<img src="${img}">
+`;
+
+});
+
+let current=0;
+
+let startX=0;
+
+slides.addEventListener("touchstart",e=>{
+
+startX=e.touches[0].clientX;
+
+});
+
+slides.addEventListener("touchend",e=>{
+
+let endX=
+e.changedTouches[0].clientX;
+
+if(startX-endX>50){
+
+current++;
+
+if(current>=images.length)
+current=0;
+
+}
+
+if(endX-startX>50){
+
+current--;
+
+if(current<0)
+current=images.length-1;
+
+}
+
+slides.style.transform=
+`translateX(-${current*100}%)`;
+
+});
+
+window.addToCart=function(){
+
+let cart=
+JSON.parse(localStorage.getItem("cart"))
+|| [];
+
+cart.push(product);
+
+localStorage.setItem(
+"cart",
+JSON.stringify(cart)
+);
+
+alert("Added To Cart");
+
+}
+
+window.buyNow=function(){
+
+addToCart();
+
+location.href="checkout.html";
+
+}
+
+</script>
+
+</body>
+</html>
