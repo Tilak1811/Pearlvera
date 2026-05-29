@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Admin</title>
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1">
+
+<style>
+
+body{
+font-family:Arial;
+padding:20px;
+}
+
+input,textarea{
+width:100%;
+padding:10px;
+margin-top:10px;
+}
+
+button{
+width:100%;
+padding:12px;
+margin-top:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2>Pearlvera Admin</h2>
+
+<input id="name"
+placeholder="Product Name">
+
+<input id="originalPrice"
+placeholder="Original Price">
+
+<input id="price"
+placeholder="Discount Price">
+
+<input type="file" id="image">
+
+<input type="file" id="image2">
+
+<input type="file" id="image3">
+
+<input type="file" id="image4">
+
+<textarea id="description"
+placeholder="Description"></textarea>
+
+<label>
+
+<input type="checkbox"
+id="featured">
+
+Featured Product
+
+</label>
+
+<button onclick="addProduct()">
+Add Product
+</button>
+
+<div id="productList"></div>
+
+<script type="module">
+
+import { auth }
+from "./firebase.js";
+
+import {
+onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+onAuthStateChanged(auth,user=>{
+
+if(!user){
+
+location.href=
+"admin-login.html";
+
+}
+
+});
+
+</script>
+
+</body>
+</html>
