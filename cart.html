@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Cart</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+
+<body>
+
+<h2>Your Cart</h2>
+
+<div id="cart"></div>
+
+<h3 id="total"></h3>
+
+<a href="checkout.html">
+<button>Checkout</button>
+</a>
+
+<script>
+
+let cart=
+JSON.parse(localStorage.getItem("cart"))
+|| [];
+
+let html="";
+
+let total=0;
+
+cart.forEach(p=>{
+
+total+=Number(p.price);
+
+html+=`
+
+<div>
+
+<img src="${p.image}"
+width="100">
+
+<h3>${p.name}</h3>
+
+<p>₹${p.price}</p>
+
+</div>
+
+`;
+
+});
+
+document.getElementById("cart")
+.innerHTML=html;
+
+document.getElementById("total")
+.innerText=
+"Total ₹"+total;
+
+</script>
+
+</body>
+</html>
