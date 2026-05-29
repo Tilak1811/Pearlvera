@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Shop - Pearlvera</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="header">
+
+<div class="logo">Pearlvera</div>
+
+<div class="nav">
+<a href="index.html">Home</a>
+<a href="cart.html">Cart</a>
+</div>
+
+</header>
+
+<h2 style="padding:20px;">All Products</h2>
+
+<div id="products" class="grid"></div>
+
+<script type="module">
+
+import { db } from "./firebase.js";
+
+import {
+collection,
+getDocs
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const snapshot = await getDocs(collection(db,"products"));
+
+const container =
+document.getElementById("products");
+
+snapshot.forEach(doc=>{
+
+const p = doc.data();
+
+container.innerHTML += `
+<div class="card"
+onclick="openProduct('${doc.id}')">
+
+<img src="${p.image}">
+
+<h3>${p.name}</h3>
+
+<p>₹${p.price}</p>
+
+</div>
+`;
+
+});
+
+window.openProduct=function(id){
+
+location.href=
+"product.html?id="+id;
+
+}
+
+</script>
+
+</body>
+</html>
